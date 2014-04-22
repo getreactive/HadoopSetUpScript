@@ -60,7 +60,11 @@ mapredsite="hadoop/etc/hadoop/mapred-site.xml"
 yarnsite="hadoop/etc/hadoop/yarn-site.xml"
 
 echo "Editing hadoop-env.sh \n"
-sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
+
+#For Java 7
+sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-7-openjdk-amd64\//' hadoop/etc/hadoop/hadoop-env.sh
+#For java 8
+# sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
 echo "Editing Core-site.xml \n"
 sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>sampleKey<\/value> \n <\/property> \n <property> \n <name>Sample Key<\/name> \n <value>CodeHere<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
 echo " Editing hdfs-site.xml \n"
