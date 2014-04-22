@@ -66,7 +66,7 @@ sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-7-openjdk
 #For java 8
 #s ed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
 echo "Editing Core-site.xml \n"
-sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>sampleKey<\/value> \n <\/property> \n <property> \n <name>Sample Key<\/name> \n <value>CodeHere<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
+sed -i 's/<configuration>/<configuration>\n\n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
 echo " Editing hdfs-site.xml \n"
 sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>dfs.replication<\/name> \n <value>1<\/value> \n <\/property> \n <property> \n <name>dfs.namenode.name.dir<\/name> \n <value>${user.home}\/hadoop\/data\/namenode<\/value> \n <\/property>\n<property><name>dfs.datanode.data.dir<\/name>\n<value>${user.home}\/hadoop\/data\/datanode<\/value>\n<\/property> \n/g' $hdfssite
 echo " Editing yarn-site.xml \n"
@@ -91,8 +91,8 @@ if [ -e $BASHRCLOC ]; then
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	#echo "export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib" | sudo tee -a ~/.bashrc
 	#echo "export HADOOP_OPTS="/usr/local/hadoop -Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a ~/.bashrc
-	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native" | sudo tee -a /etc/bash.bashrc
-	echo "export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib/native" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_OPTS="-Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_MAPRED_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_COMMON_HOME=/usr/local/hadoop" | sudo tee -a  ~/.bashrc
 	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
@@ -117,8 +117,8 @@ if [ -e /etc/bash.bashrc ]; then
 
 	source /etc/bash.bashrc
 fi
-
-
+source ~/.bashrc
+source /etc/bash.bashrc
 hadoop version
 hdfs namenode -format
 start-dfs.sh
