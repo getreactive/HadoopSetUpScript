@@ -40,15 +40,12 @@ wget http://mirror.cc.columbia.edu/pub/software/apache/hadoop/common/stable/hado
 tar -xvzf hadoop-2.2.0.tar.gz
 mv hadoop-2.2.0 hadoop
 
-
 if [ -d ~/hadoop/data/namenode ]; then
 	sudo rm -r ~/hadoop/data/namenode
 fi
 if [ -d ~/hadoop/data/datanode ]; then
 	sudo rm -r ~/hadoop/data/datanode
 fi
-
-
 
 mkdir -p ~/hadoop/data/namenode
 mkdir -p ~/hadoop/data/datanode
@@ -86,6 +83,7 @@ echo "Editing Environment Variable !! \n"
 
 if [ -e $BASHRCLOC ]; then
 	echo " Editing file"
+	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a ~/.bashrc
@@ -103,6 +101,7 @@ fi
 if [ -e /etc/bash.bashrc ]; then
 
 	echo " Editing file"
+	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
