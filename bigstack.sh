@@ -120,7 +120,7 @@ fi
 #source ~/.bashrc
 #source /etc/bash.bashrc
 
-exec ~/.bashrc
+sudo exec ~/.bashrc
 
 hadoop version
 hdfs namenode -format
