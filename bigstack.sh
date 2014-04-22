@@ -95,6 +95,20 @@ BASH_BASHRCLOC=/etc/bash.bashrc
 echo "Editing Environment Variable !! \n"
 
 if [ -e $BASHRCLOC ]; then
+
+	echo "Removing Variables"
+
+	sed '/JAVA_HOME/d' $BASHRCLOC
+	sed '/HADOOP_HOME/d' $BASHRCLOC
+	sed '/HADOOP_INSTALL/d' $BASHRCLOC
+	sed '/HADOOP_PREFIX/d' $BASHRCLOC
+	sed '/HADOOP_COMMON_LIB_NATIVE_DIR/d' $BASHRCLOC
+	sed '/HADOOP_OPTS/d' $BASHRCLOC
+	sed '/HADOOP_MAPRED_HOME/d' $BASHRCLOC
+	sed '/HADOOP_COMMON_HOME/d' $BASHRCLOC
+	sed '/HADOOP_HDFS_HOME/d' $BASHRCLOC
+	sed '/YARN_HOME/d' $BASHRCLOC
+
 	echo " Editing file"
 	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
@@ -112,7 +126,18 @@ if [ -e $BASHRCLOC ]; then
 	
 fi
 if [ -e /etc/bash.bashrc ]; then
-
+	
+	sed '/JAVA_HOME/d' /etc/bash.bashrc
+	sed '/HADOOP_HOME/d' /etc/bash.bashrc
+	sed '/HADOOP_INSTALL/d' /etc/bash.bashrc
+	sed '/HADOOP_PREFIX/d' /etc/bash.bashrc
+	sed '/HADOOP_COMMON_LIB_NATIVE_DIR/d' /etc/bash.bashrc
+	sed '/HADOOP_OPTS/d' /etc/bash.bashrc
+	sed '/HADOOP_MAPRED_HOME/d' /etc/bash.bashrc
+	sed '/HADOOP_COMMON_HOME/d' /etc/bash.bashrc
+	sed '/HADOOP_HDFS_HOME/d' /etc/bash.bashrc
+	sed '/YARN_HOME/d' /etc/bash.bashrc
+	
 	echo " Editing file"
 	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
