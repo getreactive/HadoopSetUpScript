@@ -91,8 +91,8 @@ if [ -e $BASHRCLOC ]; then
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	#echo "export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib" | sudo tee -a ~/.bashrc
 	#echo "export HADOOP_OPTS="/usr/local/hadoop -Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a ~/.bashrc
-	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib/native" | sudo tee -a ~/.bashrc
-	echo "export HADOOP_OPTS="-Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_MAPRED_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_COMMON_HOME=/usr/local/hadoop" | sudo tee -a  ~/.bashrc
 	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
@@ -115,10 +115,13 @@ if [ -e /etc/bash.bashrc ]; then
 	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a /etc/bash.bashrc
 
-	source /etc/bash.bashrc
+	#source /etc/bash.bashrc
 fi
-source ~/.bashrc
-source /etc/bash.bashrc
+#source ~/.bashrc
+#source /etc/bash.bashrc
+
+exec ~/.bashrc
+
 hadoop version
 hdfs namenode -format
 start-dfs.sh
