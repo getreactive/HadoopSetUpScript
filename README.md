@@ -1,0 +1,2 @@
+HadoopSetUpScript
+=================
