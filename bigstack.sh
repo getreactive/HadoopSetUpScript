@@ -116,8 +116,7 @@ if [ -e /etc/bash.bashrc ]; then
 
 	#source /etc/bash.bashrc
 fi
-#source ~/.bashrc
-#source /etc/bash.bashrc
+
 
 sudo exec ~/.bashrc
 
