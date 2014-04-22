@@ -62,7 +62,7 @@ yarnsite="hadoop/etc/hadoop/yarn-site.xml"
 echo "Editing hadoop-env.sh \n"
 sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
 echo "Editing Core-site.xml \n"
-sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>AKIAICB4L7QDNNVJYBXQ<\/value> \n <\/property> \n <property> \n <name>fs.s3n.awsSecretAccessKey<\/name> \n <value>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<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
+sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>sampleKey<\/value> \n <\/property> \n <property> \n <name>Sample Key<\/name> \n <value>65MlkysIYDMx24FH0LXyqvldCEohCVmoFfL53f1u<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
 echo " Editing hdfs-site.xml \n"
 sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>dfs.replication<\/name> \n <value>1<\/value> \n <\/property> \n <property> \n <name>dfs.namenode.name.dir<\/name> \n <value>${user.home}\/hadoop\/data\/namenode<\/value> \n <\/property>\n<property><name>dfs.datanode.data.dir<\/name>\n<value>${user.home}\/hadoop\/data\/datanode<\/value>\n<\/property> \n/g' $hdfssite
 echo " Editing yarn-site.xml \n"
