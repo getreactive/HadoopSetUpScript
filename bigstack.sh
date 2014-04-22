@@ -1,0 +1,119 @@
+#!/bin/sh
+# echo "Please enter sudo password:"
+# stty -echo
+# read password
+# stty echo
+# SUDOPASS=$password
+#echo $SUDOPASS
+
+echo "Installing openssh-server "
+sudo apt-get install openssh-server
+echo "Keygen for password less SSH "
+ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+ssh-add
+echo "Login to ssh "
+ssh localhost 'sleep 5 &'
+
+echo "SSH Checked"
+
+echo "Creating temprory folder for installaton \n"
+tempname="tempbiginstall"
+username=$USER
+foldername=$username$tempname
+hadoopfolder=/usr/local/hadoop
+echo $foldername
+if [ -d ~/"$foldername" ]; then
+  # Control will enter here if $DIRECTORY exists.
+  echo $foldername
+  sudo rm -r ~/$foldername
+fi
+if [ -d "$hadoopfolder" ]; then
+  # Control will enter here if $DIRECTORY exists.
+  sudo rm -r $hadoopfolder
+fi
+echo "Creating folder :- "
+mkdir -p ~/$foldername
+cd ~/$foldername
+echo "Downloading Hadoop2.2.0 ..\n"
+wget http://mirror.cc.columbia.edu/pub/software/apache/hadoop/common/stable/hadoop-2.2.0.tar.gz
+tar -xvzf hadoop-2.2.0.tar.gz
+mv hadoop-2.2.0 hadoop
+
+
+if [ -d ~/hadoop/data/namenode ]; then
+	sudo rm -r ~/hadoop/data/namenode
+fi
+if [ -d ~/hadoop/data/datanode ]; then
+	sudo rm -r ~/hadoop/data/datanode
+fi
+
+
+
+mkdir -p ~/hadoop/data/namenode
+mkdir -p ~/hadoop/data/datanode
+coresite="hadoop/etc/hadoop/core-site.xml"
+hdfssite="hadoop/etc/hadoop/hdfs-site.xml"
+echo "Remaming mapred-site.xml.template to mapred-site.xml \n"
+cp hadoop/etc/hadoop/mapred-site.xml.template hadoop/etc/hadoop/mapred-site.xml
+mapredsite="hadoop/etc/hadoop/mapred-site.xml"
+yarnsite="hadoop/etc/hadoop/yarn-site.xml"
+
+echo "Editing hadoop-env.sh \n"
+sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
+echo "Editing Core-site.xml \n"
+sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>AKIAICB4L7QDNNVJYBXQ<\/value> \n <\/property> \n <property> \n <name>fs.s3n.awsSecretAccessKey<\/name> \n <value>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<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
+echo " Editing hdfs-site.xml \n"
+sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>dfs.replication<\/name> \n <value>1<\/value> \n <\/property> \n <property> \n <name>dfs.namenode.name.dir<\/name> \n <value>${user.home}\/hadoop\/data\/namenode<\/value> \n <\/property>\n<property><name>dfs.datanode.data.dir<\/name>\n<value>${user.home}\/hadoop\/data\/datanode<\/value>\n<\/property> \n/g' $hdfssite
+echo " Editing yarn-site.xml \n"
+sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>yarn.nodemanager.aux-services<\/name> \n <value>mapreduce_shuffle<\/value> \n <\/property> \n <property> \n <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class<\/name> \n <value>org.apache.hadoop.mapred.ShuffleHandler<\/value>\n<\/property> \n\n/g' $yarnsite
+echo " Editing mapred-site.xml \n"
+sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>mapreduce.framework.name<\/name> \n <value>yarn<\/value>\n<\/property>\n\n/g' $mapredsite
+
+echo "Moving Hadoop folder to /usr/local/ Directory !!"
+sudo mv hadoop /usr/local/
+
+#cd /usr/local/hadoop
+
+BASHRCLOC=~/.bashrc
+BASH_BASHRCLOC=/etc/bash.bashrc
+
+echo "Editing Environment Variable !! \n"
+
+if [ -e $BASHRCLOC ]; then
+	echo " Editing file"
+	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	#echo "export HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib" | sudo tee -a ~/.bashrc
+	#echo "export HADOOP_OPTS="/usr/local/hadoop -Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_MAPRED_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	echo "export HADOOP_COMMON_HOME=/usr/local/hadoop" | sudo tee -a  ~/.bashrc
+	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
+	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a ~/.bashrc
+fi
+if [ -e /etc/bash.bashrc ]; then
+
+	echo " Editing file"
+	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"" | sudo tee -a /etc/bash.bashrc
+	#echo "export HADOOP_OPTS="/usr/local/hadoop -Djava.library.path=/usr/local/hadoop/lib"" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_MAPRED_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export HADOOP_COMMON_HOME=/usr/local/hadoop" | sudo tee -a  /etc/bash.bashrc
+	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
+	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a /etc/bash.bashrc
+fi
+
+source /etc/bash.bashrc
+hadoop version
+hdfs namenode -format
+start-dfs.sh
+start-yarn.sh
+jps
