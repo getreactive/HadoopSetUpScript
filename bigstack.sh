@@ -96,7 +96,7 @@ if [ -e $BASHRCLOC ]; then
 	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a ~/.bashrc
-	source ~/.bashrc
+	
 fi
 if [ -e /etc/bash.bashrc ]; then
 
