@@ -64,7 +64,7 @@ echo "Editing hadoop-env.sh \n"
 #For Java 7
 sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-7-openjdk-amd64\//' hadoop/etc/hadoop/hadoop-env.sh
 #For java 8
-# sed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
+#s ed -i 's/.*export JAVA_HOME=.*/export JAVA_HOME=\/usr\/lib\/jvm\/java-8-oracle\//' hadoop/etc/hadoop/hadoop-env.sh
 echo "Editing Core-site.xml \n"
 sed -i 's/<configuration>/<configuration>\n\n<property> \n <name>fs.s3n.awsAccessKeyId<\/name> \n <value>sampleKey<\/value> \n <\/property> \n <property> \n <name>Sample Key<\/name> \n <value>CodeHere<\/value> \n <\/property> \n \n<property>\n<name>fs.default.name<\/name>\n<value>hdfs:\/\/localhost:9000<\/value>\n<\/property> \n/g' $coresite
 echo " Editing hdfs-site.xml \n"
@@ -98,6 +98,7 @@ if [ -e $BASHRCLOC ]; then
 	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a ~/.bashrc
+	source ~/.bashrc
 fi
 if [ -e /etc/bash.bashrc ]; then
 
@@ -113,9 +114,11 @@ if [ -e /etc/bash.bashrc ]; then
 	echo "export HADOOP_HDFS_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export YARN_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin" | sudo tee -a /etc/bash.bashrc
+
+	source /etc/bash.bashrc
 fi
 
-source /etc/bash.bashrc
+
 hadoop version
 hdfs namenode -format
 start-dfs.sh
