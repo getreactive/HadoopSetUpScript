@@ -1,2 +1,3 @@
-HadoopSetUpScript
+Hadoop SetUp Script
 =================
+

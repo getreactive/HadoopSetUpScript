@@ -6,6 +6,19 @@
 # SUDOPASS=$password
 #echo $SUDOPASS
 
+echo "Check if Hadoop Process is Running or Not !!"
+
+ISHADOOPRUNNING=$(ps aux | grep hadoop | tr -s ' ' | cut -d " " -f 2)
+
+# Adding one extra process ant end need to delete it 2479 2572 2721 2883 2982 30016 ** here 3--16 should be remove
+
+if [[ -n $ISHADOOPRUNNING ]]; then
+	#statements
+	for line in $ISHADOOPRUNNING ; do 
+	kill -9 $line
+	done
+fi
+
 echo "Installing openssh-server "
 sudo apt-get install openssh-server
 echo "Keygen for password less SSH "
