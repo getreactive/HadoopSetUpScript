@@ -110,7 +110,7 @@ if [ -e $BASHRCLOC ]; then
 	sed '/YARN_HOME/d' $BASHRCLOC
 
 	echo " Editing file"
-	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a ~/.bashrc
+	echo "export JAVA_HOME=`dirname $(readlink /etc/alternatives/java)`" | sed -r 's/(.*)\/jre.*/\1/' | sudo tee -a ~/.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a ~/.bashrc
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a ~/.bashrc
@@ -139,7 +139,7 @@ if [ -e /etc/bash.bashrc ]; then
 	sed '/YARN_HOME/d' /etc/bash.bashrc
 	
 	echo " Editing file"
-	echo "export JAVA_HOME=dirname $(readlink /etc/alternatives/java) | sed -r 's/(.*)\/jre.*/\1/'" | sudo tee -a /etc/bash.bashrc
+	echo "export JAVA_HOME=`dirname $(readlink /etc/alternatives/java)`" | sed -r 's/(.*)\/jre.*/\1/' | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_HOME=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_INSTALL=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
 	echo "export HADOOP_PREFIX=/usr/local/hadoop" | sudo tee -a /etc/bash.bashrc
